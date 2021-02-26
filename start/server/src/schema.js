@@ -30,9 +30,29 @@ const typeDefs = gql`
         LARGE
     }
     type Query {
-        launches: [Launch]!
+        launches( 
+            """
+            
+            """
+            pageSize: Int
+            """
+            
+            """
+            after: String
+        ): LaunchConnection!
         launch(id: ID!): Launch
         me: User
+        }
+
+        """
+        Simple wrapper around our list of launches that contains a cursor to the
+        last item in the list. Pass this cursor to the launches query to fetch results
+        after these.
+        """
+    type LaunchConnection { 
+        cursor: String!
+        hasMore: Boolean!
+        launches: [Launch]!
     }
     type Mutation {
         bookTrips(launchIds: [ID]!): TripUpdateResponse!
@@ -44,6 +64,16 @@ const typeDefs = gql`
         message: String
         launches: [Launch]
     }
+    Mutation: {
+    login: async (_, { email }, { dataSources }) => {
+        const user = await dataSources.userAPI.findOrCreateUser({ email });
+        if (user) {
+            user.token = Buffer.from(email).toString('base64');
+            return user;
+        }
+    },
+    
+},
 `;
 
 
