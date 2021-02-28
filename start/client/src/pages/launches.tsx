@@ -4,7 +4,6 @@ import { gql, useQuery } from '@apollo/client';
 import { LaunchTile, Header, Button, Loading } from '../components';
 import * as GetLaunchListTypes from './__generated__/GetLaunchList';
 
-
 export const LAUNCH_TILE_DATA = gql`
   fragment LaunchTile on Launch {
     __typename
@@ -22,11 +21,11 @@ export const LAUNCH_TILE_DATA = gql`
 `;
 
 export const GET_LAUNCHES = gql`
-  query GetLaunchList($after: String){
-    launches(after: $after){
+  query GetLaunchList($after: String) {
+    launches(after: $after) {
       cursor
       hasMore
-      launches{
+      launches {
         ...LaunchTile
       }
     }
@@ -34,9 +33,7 @@ export const GET_LAUNCHES = gql`
   ${LAUNCH_TILE_DATA}
 `;
 
-
-
-interface LaunchesProps extends RouteComponentProps {}
+interface LaunchesProps extends RouteComponentProps { }
 
 const Launches: React.FC<LaunchesProps> = () => {
   const {
@@ -51,8 +48,7 @@ const Launches: React.FC<LaunchesProps> = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   if (loading) return <Loading />;
-  if (error) return <p>ERROR</p>;
-  if (!data) return <p>Not found</p>;
+  if (error || !data) return <p>ERROR</p>;
 
   return (
     <Fragment>
@@ -77,7 +73,7 @@ const Launches: React.FC<LaunchesProps> = () => {
             }}
           >
             Load More
-      </Button>
+            </Button>
       )}
     </Fragment>
   );
