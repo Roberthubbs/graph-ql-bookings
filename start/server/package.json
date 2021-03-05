@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon src/index.js",
-    "start:ci": "node src/index.js"
+    "start:ci": "node src/index.js",
+    "debug": "nodemon --inspect src/index.js"
   },
   "author": "",
   "license": "ISC",
